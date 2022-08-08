@@ -10,4 +10,9 @@ public class Article {
 		this.title = title;
 		this.body = body;
 	}
+
+	@Override
+	public String toString() {
+		return "Article [id=" + id + ", title=" + title + ", body=" + body + "]";
+	}
 }
