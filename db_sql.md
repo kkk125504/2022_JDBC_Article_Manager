@@ -20,5 +20,6 @@ title = CONCAT('제목',RAND()),
 `body` = CONCAT('내용',RAND());
 
 SELECT * FROM article;
+TRUNCATE article;
 ```
 
