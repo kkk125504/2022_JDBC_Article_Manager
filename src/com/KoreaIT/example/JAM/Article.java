@@ -1,5 +1,7 @@
 package com.KoreaIT.example.JAM;
 
+import java.util.Map;
+
 public class Article {
 	public int id;
 	public String regDate;
@@ -14,7 +16,6 @@ public class Article {
 		this.title = title;
 		this.body = body;
 	}
-
 	@Override
 	public String toString() {
 		return "Article [id=" + id + ", regDate=" + regDate + ", updateDate=" + updateDate + ", title=" + title
