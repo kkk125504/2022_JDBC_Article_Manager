@@ -38,9 +38,9 @@ public class JDBCSelectTEST {
 				String title = result.getString("title");
 				String body = result.getString("body");
 	
-				Article article = new Article(id,regDate,updateDate,title,body);
+//				Article article = new Article(id,regDate,updateDate,title,body);
 				
-				articles.add(article);
+//				articles.add(article);
 				}
 			for(Article article : articles) {
 				System.out.printf("번호 / %d\n", article.id);
