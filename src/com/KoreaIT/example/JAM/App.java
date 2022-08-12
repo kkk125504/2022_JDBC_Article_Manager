@@ -79,11 +79,13 @@ public class App {
 				}
 
 				SecSql sql = new SecSql();
-				sql.append("SELECT COUNT(*) FROM `member`");
+				sql.append("SELECT COUNT(*) > 0");
+				sql.append(" FROM `member`");
 				sql.append(" WHERE loginId = ?", loginId);
+				boolean isLoginIdDup = DBUtil.selectRowBooleanValue(conn, sql);
 
-				if (DBUtil.selectRowIntValue(conn, sql) != 0) {
-					System.out.println("아이디 중복");
+				if (isLoginIdDup) {
+					System.out.printf("%s는(은) 이미 사용 중인 아이디가 있습니다.\n", loginId);
 					continue;
 				}
 
