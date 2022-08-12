@@ -62,17 +62,13 @@ public class App {
 	}
 
 	private int action(Connection conn, Scanner sc, String cmd) {
-		MemberController memberController = new MemberController();
-		memberController.setConn(conn);
-		memberController.setSc(sc);	
-		ArticleController articleController = new ArticleController();
-		articleController.setConn(conn);
-		articleController.setSc(sc);	
+		MemberController memberController = new MemberController(conn,sc);		
+		ArticleController articleController = new ArticleController(conn,sc);
+		
 		if (cmd.equals("exit")) {
 			System.out.println("프로그램을 종료합니다");
 			return -1;
-		}
-		
+		}		
 		if (cmd.equals("member join")) {
 			memberController.doJoin();			
 		} else if (cmd.equals("article write")) {
@@ -88,7 +84,6 @@ public class App {
 		}else {
 			System.out.println("존재하지 않는 명령어 입니다.");
 		}
-
 		return 0;
 	}
 }
