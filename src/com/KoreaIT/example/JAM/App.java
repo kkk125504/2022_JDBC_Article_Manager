@@ -63,8 +63,75 @@ public class App {
 	}
 
 	private int doAction(Connection conn, Scanner sc, String cmd) {
+		if (cmd.equals("member join")) {
+			System.out.println("== 회원 가입 ==");
+			String loginId = null;
+			String loginPw = null;
+			String loginPwConfirm = null;
+			String name = null;
+			while (true) {
+				System.out.printf("로그인 아이디 : ");
+				loginId = sc.nextLine();
 
-		if (cmd.equals("article write")) {
+				if (loginId.trim().length() == 0) {
+					System.out.println("아이디를 입력해주세요.");
+					continue;
+				}
+
+				SecSql sql = new SecSql();
+				sql.append("SELECT COUNT(*) FROM `member`");
+				sql.append(" WHERE loginId = ?", loginId);
+
+				if (DBUtil.selectRowIntValue(conn, sql) != 0) {
+					System.out.println("아이디 중복");
+					continue;
+				}
+
+				break;
+			}
+			while (true) {
+				System.out.printf("로그인 패스워드 : ");
+				loginPw = sc.nextLine();
+
+				if (loginPw.trim().length() == 0) {
+					System.out.println("패스워드를 입력해주세요.");
+					continue;
+				}
+				boolean loginPwCheck = true;
+				while (true) {
+					System.out.printf("로그인 패스워드 확인 : ");
+					loginPwConfirm = sc.nextLine();
+
+					if (loginPwConfirm.trim().length() == 0) {
+						System.out.println("패스워드 확인을 입력해주세요.");
+						continue;
+					}
+					if (loginPw.equals(loginPwConfirm) == false) {
+						System.out.println("패스워드가 일치 하지 않습니다. 다시 입력해주세요.");
+						loginPwCheck = false;
+					}
+					break;
+				}
+				if (loginPwCheck) {
+					break;
+				}
+			}
+			System.out.printf("이름 : ");
+			name = sc.nextLine();
+
+			SecSql sql = new SecSql();
+			sql.append("INSERT INTO `member`");
+			sql.append(" SET regDate = NOW()");
+			sql.append(", updateDate = NOW()");
+			sql.append(", loginId = ?", loginId);
+			sql.append(", loginPw = ?", loginPw);
+			sql.append(", name = ?", name);
+
+			int id = DBUtil.insert(conn, sql);
+
+			System.out.printf("%s님 가입성공 \n", name);
+
+		} else if (cmd.equals("article write")) {
 			System.out.println("== 게시물 작성 ==");
 			System.out.printf("제목 : ");
 			String title = sc.nextLine();
@@ -159,26 +226,26 @@ public class App {
 			int id = Integer.parseInt(cmd.split(" ")[2]);
 
 			System.out.printf("== %d번 게시물 상세보기 ==\n", id);
-			
+
 			SecSql sql = new SecSql();
 			sql.append("SELECT *");
 			sql.append("FROM article");
 			sql.append("WHERE id = ?", id);
 
 			Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
-			
+
 			if (articleMap.isEmpty()) {
 				System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
 				return 0;
 			}
-						
+
 			Article article = new Article(articleMap);
-			
+
 			System.out.printf("번호 : %d\n", article.id);
 			System.out.printf("작성날짜 : %s\n", article.regDate);
 			System.out.printf("수정날짜 : %s\n", article.updateDate);
 			System.out.printf("제목 : %s\n", article.title);
-			System.out.printf("내용 : %s\n", article.body);		
+			System.out.printf("내용 : %s\n", article.body);
 		}
 		if (cmd.equals("exit")) {
 			System.out.println("프로그램을 종료합니다");
