@@ -24,11 +24,11 @@ public class ArticleDao {
 		return DBUtil.insert(conn, sql);
 	}
 
-	public int articleCount(int id) {
+	public boolean isArticleExists(int id) {
 		SecSql sql = new SecSql();
-		sql.append("SELECT COUNT(*) FROM article");
+		sql.append("SELECT COUNT(*) > 0 FROM article");
 		sql.append(" WHERE id = ?", id);
-		return DBUtil.selectRowIntValue(conn, sql);	
+		return DBUtil.selectRowBooleanValue(conn, sql);	
 	}
 
 	public void doDelete(int id) {

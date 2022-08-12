@@ -23,9 +23,9 @@ public class MemberController extends Controller {
 		String name = null;
 		while (true) {
 			System.out.printf("로그인 아이디 : ");
-			loginId = sc.nextLine();
+			loginId = sc.nextLine().trim();
 
-			if (loginId.trim().length() == 0) {
+			if (loginId.length() == 0) {
 				System.out.println("아이디를 입력해주세요.");
 				continue;
 			}
@@ -36,23 +36,22 @@ public class MemberController extends Controller {
 				System.out.printf("%s는(은) 이미 사용 중인 아이디가 있습니다.\n", loginId);
 				continue;
 			}
-
 			break;
 		}
 		while (true) {
 			System.out.printf("로그인 패스워드 : ");
-			loginPw = sc.nextLine();
+			loginPw = sc.nextLine().trim();
 
-			if (loginPw.trim().length() == 0) {
+			if (loginPw.length() == 0) {
 				System.out.println("패스워드를 입력해주세요.");
 				continue;
 			}
 			boolean loginPwCheck = true;
 			while (true) {
 				System.out.printf("로그인 패스워드 확인 : ");
-				loginPwConfirm = sc.nextLine();
+				loginPwConfirm = sc.nextLine().trim();
 
-				if (loginPwConfirm.trim().length() == 0) {
+				if (loginPwConfirm.length() == 0) {
 					System.out.println("패스워드 확인을 입력해주세요.");
 					continue;
 				}
@@ -66,12 +65,18 @@ public class MemberController extends Controller {
 				break;
 			}
 		}
-		System.out.printf("이름 : ");
-		name = sc.nextLine();
+		while (true) {
+			System.out.printf("이름 : ");
+			name = sc.nextLine().trim();
 
+			if (name.length() == 0) {
+				System.out.println("이름을 입력해주세요");
+				continue;
+			}
+			break;
+		}
 		int id = memberService.doJoin(loginId, loginPw,name);
 		System.out.printf("%s님 가입 되었습니다. \n", name);
-
 	}
 
 }

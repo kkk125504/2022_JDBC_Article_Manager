@@ -6,7 +6,7 @@ import java.util.Scanner;
 import com.KoreaIT.example.JAM.dao.MemberDao;
 
 public class MemberService {
-	MemberDao memberDao;
+	private MemberDao memberDao;
 	
 	public MemberService(Connection conn){
 		memberDao = new MemberDao(conn);
@@ -19,5 +19,4 @@ public class MemberService {
 	public int doJoin(String loginId, String loginPw, String name) {		
 		return memberDao.doJoin(loginId,loginPw,name);
 	}
-
 }

@@ -14,10 +14,10 @@ import com.KoreaIT.example.JAM.util.SecSql;
 
 public class ArticleController extends Controller {
 	private ArticleService articleService;
-	
+
 	public ArticleController(Connection conn, Scanner sc) {
 		super(sc);
-		articleService  = new ArticleService(conn);
+		articleService = new ArticleService(conn);
 	}
 
 	public void doWrtie() {
@@ -27,8 +27,8 @@ public class ArticleController extends Controller {
 		System.out.printf("내용 : ");
 		String body = sc.nextLine();
 
-		int id = articleService.doWrite(title,body);
-		System.out.printf("%d번 게시물이 생성되었습니다.\n", id);		
+		int id = articleService.doWrite(title, body);
+		System.out.printf("%d번 게시물이 생성되었습니다.\n", id);
 	}
 
 	public void doDelete(String cmd) {
@@ -36,54 +36,13 @@ public class ArticleController extends Controller {
 
 		System.out.printf("== %d번 게시물 삭제 ==\n", id);
 
-		int articlesCount = articleService.articleCount(id);
-		if (articlesCount == 0) {
+		Boolean isArticleExists = articleService.isArticleExists(id);
+		if (isArticleExists == false) {
 			System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
 			return;
 		}
 		articleService.doDelete(id);
-		System.out.printf("%d번 게시물이 삭제 되었습니다\n", id);		
-	}
-
-	public void doModify(String cmd) {
-		int id = Integer.parseInt(cmd.split(" ")[2]);
-		System.out.printf("== %d번 게시물 수정 ==\n", id);
-		
-		int articlesCount = articleService.articleCount(id);
-		if (articlesCount == 0) {
-			System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
-			return;
-		}
-
-		System.out.printf("새 제목 : ");
-		String title = sc.nextLine();
-		System.out.printf("새 내용 : ");
-		String body = sc.nextLine();
-
-		articleService.doModify(id,title,body);	
-		System.out.printf("%d번 게시물이 수정 되었습니다\n", id);	
-	}
-
-	public void showList(String cmd) {
-		System.out.println("== 게시물 리스트 ==");
-
-		List<Article> articles = new ArrayList<>();
-		
-		List<Map<String, Object>> articlesListMap = articleService.articlesListMap();
-
-		for (Map<String, Object> articleMap : articlesListMap) {
-			articles.add(new Article(articleMap));
-		}
-
-		if (articles.size() == 0) {
-			System.out.println("게시물이 없습니다");
-			return;
-		}
-		System.out.println("번호  /  제목");
-
-		for (Article article : articles) {
-			System.out.printf("%d  /  %s\n", article.id, article.title);
-		}	
+		System.out.printf("%d번 게시물이 삭제 되었습니다\n", id);
 	}
 
 	public void showDetail(String cmd) {
@@ -104,6 +63,48 @@ public class ArticleController extends Controller {
 		System.out.printf("작성날짜 : %s\n", article.regDate);
 		System.out.printf("수정날짜 : %s\n", article.updateDate);
 		System.out.printf("제목 : %s\n", article.title);
-		System.out.printf("내용 : %s\n", article.body);		
+		System.out.printf("내용 : %s\n", article.body);
 	}
+
+	public void doModify(String cmd) {
+		int id = Integer.parseInt(cmd.split(" ")[2]);
+		System.out.printf("== %d번 게시물 수정 ==\n", id);
+
+		Boolean isArticleExists = articleService.isArticleExists(id);
+		if (isArticleExists == false) {
+			System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
+			return;
+		}
+
+		System.out.printf("새 제목 : ");
+		String title = sc.nextLine();
+		System.out.printf("새 내용 : ");
+		String body = sc.nextLine();
+
+		articleService.doModify(id, title, body);
+		System.out.printf("%d번 게시물이 수정 되었습니다\n", id);
+	}
+
+	public void showList(String cmd) {
+		System.out.println("== 게시물 리스트 ==");
+
+		List<Article> articles = new ArrayList<>();
+
+		List<Map<String, Object>> articlesListMap = articleService.articlesListMap();
+
+		for (Map<String, Object> articleMap : articlesListMap) {
+			articles.add(new Article(articleMap));
+		}
+
+		if (articles.size() == 0) {
+			System.out.println("게시물이 없습니다");
+			return;
+		}
+		System.out.println("번호  /  제목");
+
+		for (Article article : articles) {
+			System.out.printf("%d  /  %s\n", article.id, article.title);
+		}
+	}
+
 }

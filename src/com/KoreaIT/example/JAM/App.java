@@ -64,7 +64,7 @@ public class App {
 	private int action(Connection conn, Scanner sc, String cmd) {
 		MemberController memberController = new MemberController(conn,sc);		
 		ArticleController articleController = new ArticleController(conn,sc);
-		
+			
 		if (cmd.equals("exit")) {
 			System.out.println("프로그램을 종료합니다");
 			return -1;
@@ -75,13 +75,13 @@ public class App {
 			articleController.doWrtie();			
 		} else if (cmd.startsWith("article delete ")) {
 			articleController.doDelete(cmd);	
+		} else if (cmd.startsWith("article detail ")) {
+			articleController.showDetail(cmd);				
 		} else if (cmd.startsWith("article modify ")) {
 			articleController.doModify(cmd);
 		} else if (cmd.equals("article list")) {
 			articleController.showList(cmd);			
-		} else if (cmd.startsWith("article detail ")) {
-			articleController.showDetail(cmd);				
-		}else {
+		} else {
 			System.out.println("존재하지 않는 명령어 입니다.");
 		}
 		return 0;

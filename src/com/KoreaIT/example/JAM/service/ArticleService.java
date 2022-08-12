@@ -18,8 +18,8 @@ public class ArticleService {
 
 	}
 
-	public int articleCount(int id) {		
-		return articleDao.articleCount(id);
+	public boolean isArticleExists(int id) {		
+		return articleDao.isArticleExists(id);
 	}
 
 	public void doDelete(int id) {
