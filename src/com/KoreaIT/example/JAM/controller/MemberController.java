@@ -75,7 +75,7 @@ public class MemberController extends Controller {
 			}
 			break;
 		}
-		int id = memberService.doJoin(loginId, loginPw,name);
+		int id = memberService.doJoin(loginId, loginPw, name);
 		System.out.printf("%s님 가입 되었습니다. \n", name);
 	}
 

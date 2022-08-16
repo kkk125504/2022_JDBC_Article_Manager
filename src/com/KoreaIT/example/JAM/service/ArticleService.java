@@ -7,7 +7,7 @@ import java.util.Map;
 import com.KoreaIT.example.JAM.dao.ArticleDao;
 
 public class ArticleService {
-	ArticleDao articleDao;
+	private ArticleDao articleDao;
 
 	public ArticleService(Connection conn) {
 		articleDao = new ArticleDao(conn);
@@ -15,7 +15,6 @@ public class ArticleService {
 
 	public int doWrite(String title, String body) {
 		return articleDao.doWrite(title,body);
-
 	}
 
 	public boolean isArticleExists(int id) {		

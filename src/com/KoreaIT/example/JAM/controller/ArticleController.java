@@ -37,6 +37,7 @@ public class ArticleController extends Controller {
 		System.out.printf("== %d번 게시물 삭제 ==\n", id);
 
 		Boolean isArticleExists = articleService.isArticleExists(id);
+		
 		if (isArticleExists == false) {
 			System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
 			return;

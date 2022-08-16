@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Article {
 	public int id;
-	public LocalDateTime  regDate;
+	public LocalDateTime regDate;
 	public LocalDateTime updateDate;
 	public String title;
 	public String body;
