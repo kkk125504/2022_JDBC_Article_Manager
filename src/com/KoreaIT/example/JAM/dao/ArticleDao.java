@@ -1,9 +1,11 @@
 package com.KoreaIT.example.JAM.dao;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.KoreaIT.example.JAM.Article;
 import com.KoreaIT.example.JAM.util.DBUtil;
 import com.KoreaIT.example.JAM.util.SecSql;
 
@@ -20,7 +22,7 @@ public class ArticleDao {
 		sql.append(" SET regDate = NOW()");
 		sql.append(", updateDate = NOW()");
 		sql.append(", title = ?", title);
-		sql.append(", `body` = ?", body);
+		sql.append(", `body` = ?", body);		
 		return DBUtil.insert(conn, sql);
 	}
 
@@ -42,27 +44,38 @@ public class ArticleDao {
 		SecSql sql = new SecSql();
 		sql.append("UPDATE article");
 		sql.append(" SET updateDate = NOW()");
-		sql.append(", updateDate = NOW()");
 		sql.append(", title = ?", title);
 		sql.append(", `body` = ?", body);
 		sql.append(" WHERE id = ?", id);
 		DBUtil.update(conn, sql);
 	}
 
-	public List<Map<String, Object>> articlesListMap() {
-		SecSql sql = new SecSql();
-		sql.append("SELECT *");
-		sql.append(" FROM article");
-		sql.append(" ORDER BY id DESC");
-		return DBUtil.selectRows(conn, sql);
-	}
-
-	public Map<String, Object> articleMap(int id) {
+	public Article getArticleById(int id) {
 		SecSql sql = new SecSql();
 		sql.append("SELECT *");
 		sql.append("FROM article");
 		sql.append("WHERE id = ?", id);
-		return DBUtil.selectRow(conn, sql);
+	    Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
+	    if(articleMap.isEmpty()==true) {
+	    	return null;
+	    }
+	    
+		return new Article(articleMap);
+	}
+
+	public List<Article> getArticles() {
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append(" FROM article");
+		sql.append(" ORDER BY id DESC");
+		List<Article> articles = new ArrayList<>();
+	
+		List<Map<String ,Object>> articlesMap = DBUtil.selectRows(conn, sql);
+		for (Map<String, Object> articleMap : articlesMap) {
+			articles.add(new Article(articleMap));
+		}
+
+		return articles;
 	}
 
 }

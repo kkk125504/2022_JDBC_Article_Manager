@@ -51,15 +51,13 @@ public class ArticleController extends Controller {
 
 		System.out.printf("== %d번 게시물 상세보기 ==\n", id);
 
-		Map<String, Object> articleMap = articleService.articleMap(id);
+		Article article = articleService.getArticleById(id);
 
-		if (articleMap.isEmpty()) {
+		if (article == null) {
 			System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
 			return;
 		}
-
-		Article article = new Article(articleMap);
-
+		
 		System.out.printf("번호 : %d\n", article.id);
 		System.out.printf("작성날짜 : %s\n", article.regDate);
 		System.out.printf("수정날짜 : %s\n", article.updateDate);
@@ -71,8 +69,9 @@ public class ArticleController extends Controller {
 		int id = Integer.parseInt(cmd.split(" ")[2]);
 		System.out.printf("== %d번 게시물 수정 ==\n", id);
 
-		Boolean isArticleExists = articleService.isArticleExists(id);
-		if (isArticleExists == false) {
+		Article article = articleService.getArticleById(id);
+
+		if (article == null) {
 			System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
 			return;
 		}
@@ -89,18 +88,13 @@ public class ArticleController extends Controller {
 	public void showList(String cmd) {
 		System.out.println("== 게시물 리스트 ==");
 
-		List<Article> articles = new ArrayList<>();
-
-		List<Map<String, Object>> articlesListMap = articleService.articlesListMap();
-
-		for (Map<String, Object> articleMap : articlesListMap) {
-			articles.add(new Article(articleMap));
-		}
-
+		List<Article> articles = articleService.getArticles();
+		
 		if (articles.size() == 0) {
 			System.out.println("게시물이 없습니다");
 			return;
 		}
+		
 		System.out.println("번호  /  제목");
 
 		for (Article article : articles) {

@@ -8,13 +8,13 @@ import com.KoreaIT.example.JAM.util.DBUtil;
 import com.KoreaIT.example.JAM.util.SecSql;
 
 public class MemberController extends Controller {
-	MemberService memberService;	
+	MemberService memberService;
 
-	public MemberController(Connection conn, Scanner sc){
+	public MemberController(Connection conn, Scanner sc) {
 		super(sc);
 		memberService = new MemberService(conn);
 	}
-	
+
 	public void doJoin() {
 		System.out.println("== 회원 가입 ==");
 		String loginId = null;
@@ -29,7 +29,7 @@ public class MemberController extends Controller {
 				System.out.println("아이디를 입력해주세요.");
 				continue;
 			}
-			
+
 			boolean isLoginIdDup = memberService.isLoginIdDup(loginId);
 
 			if (isLoginIdDup) {
