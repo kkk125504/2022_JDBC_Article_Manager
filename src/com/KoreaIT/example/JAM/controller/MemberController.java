@@ -87,22 +87,37 @@ public class MemberController extends Controller {
 	}
 
 	public void login(String cmd) {
+		if(Container.session.loginedMemberId != -1) {
+			System.out.println("로그아웃 후 이용 가능합니다.");
+			return;
+		}
+		
+		
 		String loginId = null;
 		String loginPw = null;
 
 		System.out.println("== 로그인 ==");
 		// id 입력
+		int loginIdTryMaxCount = 3;
+		int loginIdTrytryCount = 0;
 		while (true) {
+			if (loginIdTrytryCount >= loginIdTryMaxCount) {
+				System.out.println("비밀번호를 확인하고 다시 시도해주세요.");
+				break;
+			}
+			
 			System.out.printf("아이디 : ");
 			loginId = sc.nextLine().trim();
 			if (loginId.length() == 0) {
-				System.out.println("아이디를 입력해주세요");
+				loginIdTrytryCount++;
+				System.out.println("아이디를 입력해주세요");				
 				continue;
 			}
 
 			boolean isLoginIdDup = memberService.isLoginIdDup(loginId);
 
 			if (isLoginIdDup == false) {
+				loginIdTrytryCount++;
 				System.out.printf("%s는(은) 존재하지 않는 아이디입니다.\n", loginId);
 				continue;
 			}
@@ -112,11 +127,11 @@ public class MemberController extends Controller {
 
 		Member member = memberService.getMemberByLoginId(loginId);
 
-		int tryMaxCount = 3;
-		int tryCount = 0;
+		int loginPwTryMaxCount = 3;
+		int loginPwTryCount = 0;
 
 		while (true) {
-			if (tryCount >= tryMaxCount) {
+			if (loginPwTryCount >= loginPwTryMaxCount) {
 				System.out.println("비밀번호를 확인하고 다시 시도해주세요.");
 				break;
 			}
@@ -125,21 +140,35 @@ public class MemberController extends Controller {
 			loginPw = sc.nextLine().trim();
 
 			if (loginPw.length() == 0) {
-				tryCount++;
+				loginPwTryCount++;
 				System.out.println("비밀번호를 입력해주세요");
 				continue;
 			}
 
 			if (member.loginPw.equals(loginPw) == false) {
-				tryCount++;
+				loginPwTryCount++;
 				System.out.println("비밀번호가 일치하지 않습니다.");
 				continue;
 			}
-
+			Container.session.loginedMember = member;
+			Container.session.loginedMemberId = member.id;
+			
 			System.out.printf("%s님 환영합니다.\n", member.name);
 			break;
 		}
 
+	}
+
+	public void showProfile(String cmd) {
+		if(Container.session.loginedMemberId==-1) {
+			System.out.println("로그인 후 이용가능합니다.");
+			return;
+		}else {	 
+			System.out.printf("번호  :  %d\n", Container.session.loginedMember.id);
+			System.out.printf("아이디  :  %s\n", Container.session.loginedMember.loginId);
+			System.out.printf("이름  :  %s\n", Container.session.loginedMember.name);
+		}
+					
 	}
 
 }
