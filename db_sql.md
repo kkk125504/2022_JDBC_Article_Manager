@@ -40,6 +40,12 @@ loginPW = CONCAT('TestPw',RAND()),
 SELECT * FROM article;
 SELECT * FROM `member`;
 
-#select rand()
+SELECT COUNT(*) = 0
+FROM `member`
+WHERE loginId = 'aaa1';
+
+INSERT INTO article  SET regDate = NOW() , updateDate = NOW() , title = '123' , `body = '123';
+
+# select rand()
 ```
 

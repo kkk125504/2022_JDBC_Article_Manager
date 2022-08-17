@@ -1,12 +1,13 @@
 package com.KoreaIT.example.JAM.controller;
 
-import java.sql.Connection;
 import java.util.Scanner;
+
+import com.KoreaIT.example.JAM.container.Container;
 
 public abstract class Controller {
 	protected Scanner sc;
 
-	protected Controller(Scanner sc) {
-		this.sc = sc;
+	public Controller() {
+		this.sc = Container.sc;
 	}
 }

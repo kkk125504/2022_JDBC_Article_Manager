@@ -3,24 +3,22 @@ package com.KoreaIT.example.JAM;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
+import com.KoreaIT.example.JAM.container.Container;
 import com.KoreaIT.example.JAM.controller.ArticleController;
 import com.KoreaIT.example.JAM.controller.MemberController;
-import com.KoreaIT.example.JAM.util.DBUtil;
-import com.KoreaIT.example.JAM.util.SecSql;
 
 public class App {
 
 	public void run() {
-		Scanner sc = new Scanner(System.in);
+		Container.sc = new Scanner(System.in);
+
+		Container.init();
 
 		while (true) {
 			System.out.printf("명령어) ");
-			String cmd = sc.nextLine().trim();
+			String cmd = Container.sc.nextLine().trim();
 
 			// DB 연결
 			Connection conn = null;
@@ -39,7 +37,9 @@ public class App {
 			try {
 				conn = DriverManager.getConnection(url, "root", "");
 
-				int actionResult = action(conn, sc, cmd);
+				Container.conn = conn;
+
+				int actionResult = action(cmd);
 
 				if (actionResult == -1) {
 					break;
@@ -61,31 +61,35 @@ public class App {
 		}
 	}
 
-	private int action(Connection conn, Scanner sc, String cmd) {
-		MemberController memberController = new MemberController(conn,sc);		
-		ArticleController articleController = new ArticleController(conn,sc);
-			
+	private int action(String cmd) {
+
 		if (cmd.equals("exit")) {
 			System.out.println("프로그램을 종료합니다");
 			return -1;
-		}		
+		}
+
+		MemberController memberController = Container.memberController;
+		ArticleController articleController = Container.articleController;
+
 		if (cmd.equals("member join")) {
-			memberController.doJoin();			
+			memberController.doJoin(cmd);
 		} else if (cmd.equals("member login")) {
-			memberController.login();			
-		}else if (cmd.equals("article write")) {
-			articleController.doWrtie();			
+			memberController.login(cmd);
+		} else if (cmd.equals("article write")) {
+			articleController.doWrite(cmd);
 		} else if (cmd.startsWith("article delete ")) {
-			articleController.doDelete(cmd);	
+			articleController.doDelete(cmd);
 		} else if (cmd.startsWith("article detail ")) {
-			articleController.showDetail(cmd);				
+			articleController.showDetail(cmd);
 		} else if (cmd.startsWith("article modify ")) {
 			articleController.doModify(cmd);
 		} else if (cmd.equals("article list")) {
-			articleController.showList(cmd);			
+			articleController.showList(cmd);
 		} else {
-			System.out.println("존재하지 않는 명령어 입니다.");
+			System.out.println("존재하지 않는 명령어 입니다");
 		}
+
 		return 0;
 	}
+
 }
