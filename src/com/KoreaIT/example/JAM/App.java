@@ -71,7 +71,9 @@ public class App {
 		}		
 		if (cmd.equals("member join")) {
 			memberController.doJoin();			
-		} else if (cmd.equals("article write")) {
+		} else if (cmd.equals("member login")) {
+			memberController.login();			
+		}else if (cmd.equals("article write")) {
 			articleController.doWrtie();			
 		} else if (cmd.startsWith("article delete ")) {
 			articleController.doDelete(cmd);	
