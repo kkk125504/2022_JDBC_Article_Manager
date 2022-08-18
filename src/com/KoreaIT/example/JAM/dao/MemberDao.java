@@ -39,7 +39,6 @@ public class MemberDao {
 	}
 
 	public Member getMemberByLoginId(String loginId) {
-
 		SecSql sql = new SecSql();
 
 		sql.append("SELECT *");
@@ -54,5 +53,7 @@ public class MemberDao {
 
 		return new Member(memberMap);
 	}
+
+
 
 }

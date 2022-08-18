@@ -5,7 +5,7 @@ import com.KoreaIT.example.JAM.container.Container;
 import com.KoreaIT.example.JAM.service.MemberService;
 
 public class MemberController extends Controller {
-	
+
 	private MemberService memberService;
 
 	public MemberController() {
@@ -13,6 +13,10 @@ public class MemberController extends Controller {
 	}
 
 	public void doJoin(String cmd) {
+		if (Container.session.isLogined()) {
+			System.out.println("로그아웃 후 이용해주세요.");
+			return;
+		}
 		String loginId = null;
 		String loginPw = null;
 		String loginPwConfirm = null;
@@ -87,12 +91,10 @@ public class MemberController extends Controller {
 	}
 
 	public void login(String cmd) {
-		if(Container.session.loginedMemberId != -1) {
-			System.out.println("로그아웃 후 이용 가능합니다.");
+		if (Container.session.isLogined()) {
+			System.out.println("로그아웃 후 이용해주세요.");
 			return;
 		}
-		
-		
 		String loginId = null;
 		String loginPw = null;
 
@@ -105,12 +107,12 @@ public class MemberController extends Controller {
 				System.out.println("비밀번호를 확인하고 다시 시도해주세요.");
 				break;
 			}
-			
+
 			System.out.printf("아이디 : ");
 			loginId = sc.nextLine().trim();
 			if (loginId.length() == 0) {
 				loginIdTrytryCount++;
-				System.out.println("아이디를 입력해주세요");				
+				System.out.println("아이디를 입력해주세요");
 				continue;
 			}
 
@@ -150,9 +152,8 @@ public class MemberController extends Controller {
 				System.out.println("비밀번호가 일치하지 않습니다.");
 				continue;
 			}
-			Container.session.loginedMember = member;
-			Container.session.loginedMemberId = member.id;
-			
+
+			Container.session.login(member);
 			System.out.printf("%s님 환영합니다.\n", member.name);
 			break;
 		}
@@ -160,15 +161,22 @@ public class MemberController extends Controller {
 	}
 
 	public void showProfile(String cmd) {
-		if(Container.session.loginedMemberId==-1) {
-			System.out.println("로그인 후 이용가능합니다.");
+		if (Container.session.isLogined() == false) {
+			System.out.println("로그인 후 이용해주세요.");
 			return;
-		}else {	 
-			System.out.printf("번호  :  %d\n", Container.session.loginedMember.id);
-			System.out.printf("아이디  :  %s\n", Container.session.loginedMember.loginId);
-			System.out.printf("이름  :  %s\n", Container.session.loginedMember.name);
 		}
-					
+		System.out.printf("번호  :  %d\n", Container.session.loginedMember.id);
+		System.out.printf("아이디  :  %s\n", Container.session.loginedMember.loginId);
+		System.out.printf("이름  :  %s\n", Container.session.loginedMember.name);
 	}
 
+	public void logout(String cmd) {
+		if (Container.session.isLogined() == false) {
+			System.out.println("로그인 후 이용해주세요.");
+			return;
+		}
+
+		Container.session.logout();
+		System.out.println("로그아웃 하셨습니다.");
+	}
 }

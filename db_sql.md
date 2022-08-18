@@ -2,10 +2,8 @@
 # DB 생성
 DROP DATABASE IF EXISTS article_manager;
 CREATE DATABASE article_manager;
-
 # DB 선택 
 USE article_manager;
-
 # 게시글 테이블 생성
 CREATE TABLE article(
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -23,29 +21,23 @@ CREATE TABLE `member` (
     loginPw CHAR(100) NOT NULL,
     `name` CHAR(200) NOT NULL
 );
-
 INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
 title = CONCAT('제목',RAND()),
 `body` = CONCAT('내용',RAND());
-
 INSERT INTO `member`
 SET regDate = NOW(),
 updateDate = NOW(),
 loginId = CONCAT('TestId',RAND()),
 loginPW = CONCAT('TestPw',RAND()),
 `name` = CONCAT('TestName',RAND());
-
 SELECT * FROM article;
 SELECT * FROM `member`;
-
 SELECT COUNT(*) = 0
 FROM `member`
 WHERE loginId = 'aaa1';
-
 INSERT INTO article  SET regDate = NOW() , updateDate = NOW() , title = '123' , `body = '123';
-
 # select rand()
 ```
 

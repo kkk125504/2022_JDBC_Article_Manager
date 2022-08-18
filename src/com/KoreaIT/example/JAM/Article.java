@@ -9,13 +9,15 @@ public class Article {
 	public LocalDateTime updateDate;
 	public String title;
 	public String body;
-
-	public Article(int id, LocalDateTime regDate, LocalDateTime updateDate, String title, String body) {
+	public int memberId;
+	
+	public Article(int id, LocalDateTime regDate, LocalDateTime updateDate, String title, String body, int memberId) {
 		this.id = id;
 		this.regDate = regDate;
 		this.updateDate = updateDate;
 		this.title = title;
 		this.body = body;
+		this.memberId = memberId;
 	}
 	public Article(Map<String, Object> articleMap) {
 		this.id = (int)articleMap.get("id");
@@ -23,6 +25,7 @@ public class Article {
 		this.updateDate = (LocalDateTime) articleMap.get("updateDate");
 		this.title = (String)articleMap.get("title");
 		this.body = (String)articleMap.get("body");
+		this.memberId = (int)articleMap.get("memberId");
 	}
 	@Override
 	public String toString() {
