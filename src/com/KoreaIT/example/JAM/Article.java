@@ -10,7 +10,7 @@ public class Article {
 	public int memberId;
 	public String title;
 	public String body;
-
+	public int hit;
 	public String extra__writer;
 
 	public Article(Map<String, Object> articleMap) {
@@ -20,7 +20,7 @@ public class Article {
 		this.memberId = (int) articleMap.get("memberId");
 		this.title = (String) articleMap.get("title");
 		this.body = (String) articleMap.get("body");
-		
+		this.hit = (int) articleMap.get("hit");
 		if (articleMap.get("extra__writer") != null) {
 			this.extra__writer = (String) articleMap.get("extra__writer");
 		}
@@ -29,7 +29,7 @@ public class Article {
 	@Override
 	public String toString() {
 		return "Article [id=" + id + ", regDate=" + regDate + ", updateDate=" + updateDate + ", memberId=" + memberId
-				+ ", title=" + title + ", body=" + body + ", extra__writer=" + extra__writer + "]";
+				+ ", title=" + title + ", body=" + body + ", hit=" + hit + ", extra__writer=" + extra__writer + "]";
 	}
 
 }
