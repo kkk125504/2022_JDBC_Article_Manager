@@ -14,8 +14,8 @@ public class ArticleService {
 		articleDao = Container.articleDao;
 	}
 
-	public int doWrite(String title, String body,int memberId) {
-		return articleDao.doWrite(title, body,memberId);
+	public int doWrite(int memberId,String title, String body) {
+		return articleDao.doWrite(memberId,title, body);
 	}
 
 	public boolean isArticleExists(int id) {

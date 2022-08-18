@@ -21,6 +21,25 @@ CREATE TABLE `member` (
     loginPw CHAR(100) NOT NULL,
     `name` CHAR(200) NOT NULL
 );
+
+# 임시 회원 데이터
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+loginId = 'test1',
+loginPW = 'test1',
+`name` = '김철수';
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+loginId = 'test2',
+loginPW = 'test2',
+`name` = '김영희';
+
+#게시물 테이블에 memberId 칼럼 추가
+ALTER TABLE article ADD COLUMN memberId INT(10) UNSIGNED NOT NULL;
+
+/*
 INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
@@ -32,6 +51,8 @@ updateDate = NOW(),
 loginId = CONCAT('TestId',RAND()),
 loginPW = CONCAT('TestPw',RAND()),
 `name` = CONCAT('TestName',RAND());
+*/
+
 SELECT * FROM article;
 SELECT * FROM `member`;
 SELECT COUNT(*) = 0
