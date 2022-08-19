@@ -1,7 +1,8 @@
 package com.KoreaIT.example.JAM.service;
 
-import java.sql.Connection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.KoreaIT.example.JAM.Article;
 import com.KoreaIT.example.JAM.container.Container;
@@ -41,6 +42,18 @@ public class ArticleService {
 	public void increaseHit(int id) {
 		articleDao.increaseHit(id);
 		
+	}
+
+	public List<Article> getForPrintArticles(int page, int itemsInAPage, String searchKeyword) {
+		int limitFrom = (page - 1) * itemsInAPage;
+		int limitTake = itemsInAPage;
+
+		Map<String, Object> args = new HashMap<>();
+		args.put("searchKeyword", searchKeyword);
+		args.put("limitFrom", limitFrom);
+		args.put("limitTake", limitTake);
+
+		return articleDao.getForPrintArticles(args);
 	}
 
 }

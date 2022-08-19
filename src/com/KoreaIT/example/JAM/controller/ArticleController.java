@@ -16,13 +16,13 @@ public class ArticleController extends Controller {
 	}
 
 	public void doWrite(String cmd) {
-		if(Container.session.isLogined() == false){
+		if (Container.session.isLogined() == false) {
 			System.out.println("로그인 후 이용해주세요.");
 			return;
 		}
-		
+
 		System.out.println("== 게시물 작성 ==");
-		
+
 		System.out.printf("제목 : ");
 		String title = sc.nextLine();
 		System.out.printf("내용 : ");
@@ -34,12 +34,12 @@ public class ArticleController extends Controller {
 
 	}
 
-	public void doDelete(String cmd) {		
-		if(Container.session.isLogined() == false){
+	public void doDelete(String cmd) {
+		if (Container.session.isLogined() == false) {
 			System.out.println("로그인 후 이용해주세요.");
 			return;
-		}	
-		
+		}
+
 		int id = Integer.parseInt(cmd.split(" ")[2]);
 
 		Article article = articleService.getArticleById(id);
@@ -47,13 +47,13 @@ public class ArticleController extends Controller {
 		if (article == null) {
 			System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
 			return;
-		}		
-		
-		if(article.memberId != Container.session.loginedMemberId) {
+		}
+
+		if (article.memberId != Container.session.loginedMemberId) {
 			System.out.println("해당 게시물에 대한 권한이 없습니다.");
 			return;
 		}
-		
+
 		System.out.printf("== %d번 게시물 삭제 ==\n", id);
 
 		articleService.doDelete(id);
@@ -64,14 +64,14 @@ public class ArticleController extends Controller {
 
 	public void showDetail(String cmd) {
 		int id = Integer.parseInt(cmd.split(" ")[2]);
-		
+
 		articleService.increaseHit(id);
 		Article article = articleService.getArticleById(id);
 
 		if (article == null) {
 			System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
 			return;
-		}		
+		}
 		System.out.printf("== %d번 게시물 상세보기 ==\n", id);
 		System.out.printf("번호 : %d\n", article.id);
 		System.out.printf("작성날짜 : %s\n", article.regDate);
@@ -83,11 +83,11 @@ public class ArticleController extends Controller {
 	}
 
 	public void doModify(String cmd) {
-		if(Container.session.isLogined() == false){
+		if (Container.session.isLogined() == false) {
 			System.out.println("로그인 후 이용해주세요.");
 			return;
 		}
-		
+
 		int id = Integer.parseInt(cmd.split(" ")[2]);
 
 		Article article = articleService.getArticleById(id);
@@ -96,8 +96,8 @@ public class ArticleController extends Controller {
 			System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
 			return;
 		}
-		
-		if(article.memberId != Container.session.loginedMemberId) {
+
+		if (article.memberId != Container.session.loginedMemberId) {
 			System.out.println("해당 게시물에 대한 권한이 없습니다.");
 			return;
 		}
@@ -114,19 +114,34 @@ public class ArticleController extends Controller {
 
 	public void showList(String cmd) {
 		System.out.println("== 게시물 리스트 ==");
+		String[] cmdBits = cmd.split(" ");
 
-		List<Article> articles = articleService.getArticles();
+		int page = 1;
+		String searchKeyword = "";
 
+		if (cmdBits.length >= 3) {
+			page = Integer.parseInt(cmdBits[2]);
+		}
+
+		if (cmdBits.length >= 4) {
+			searchKeyword = cmdBits[3];
+		}
+
+		int itemsInAPage = 10;
+			
+
+		List<Article> articles = articleService.getForPrintArticles(page, itemsInAPage, searchKeyword);
+		
 		if (articles.size() == 0) {
 			System.out.println("게시물이 없습니다");
 			return;
 		}
-		
+
 		System.out.printf("번호  /  %8s         /  제목   /  작성자   /  조회수\n", "작성날짜");
 
 		for (Article article : articles) {
 			System.out.printf("%4d  /  %s  /  %s  /  %s  /  %d\n", article.id, article.regDate, article.title,
-					article.extra__writer,article.hit);
+					article.extra__writer, article.hit);
 		}
 
 	}
